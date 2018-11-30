@@ -16,7 +16,7 @@ sudo apt-get install docker-ce -y
 docker --version
 # Install Terraform
 sudo apt-get install unzip -y
-sudo wget -q https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
+sudo wget -q -nc https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
 sudo unzip terraform_0.11.10_linux_amd64.zip
 sudo mv terraform /usr/local/bin/
 sudo terraform version
