@@ -1,6 +1,5 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-
 $script = <<SCRIPT
 # Install Docker
 sudo apt-get update
