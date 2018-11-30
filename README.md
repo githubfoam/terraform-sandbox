@@ -1,10 +1,10 @@
-Vagrant Terraform Docker Nginx Sandbox
+Vagrant Sandbox
 =========
 
 
 ----------------
 
-Sandbox
+Vagrant Terraform Docker Nginx Sandbox
 ----------------
 
 
