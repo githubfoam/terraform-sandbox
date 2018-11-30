@@ -29,7 +29,6 @@ sudo terraform apply "nginx.tfplan"
 sudo docker ps -a
 # sudo terraform destroy
 SCRIPT
-
 Vagrant.configure(2) do |config|
   config.vm.box_check_update = false
   config.vm.box = "bento/ubuntu-18.04"
