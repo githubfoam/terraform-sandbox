@@ -22,8 +22,11 @@ sudo mv terraform /usr/local/bin/
 sudo terraform version
 # Run terraform templates
 cd /vagrant
+# Initialize the working directory.
 sudo terraform init
+# Create a plan and save it to the local file tfplan.
 sudo terraform plan -out nginx.tfplan
+# Apply the plan stored in the file tfplan.
 sudo terraform apply "nginx.tfplan"
 sudo docker ps -a
 # sudo terraform destroy
