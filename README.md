@@ -3,7 +3,7 @@ Vagrant Terraform Sandbox
 
 
 ----------------
-
+Cross-platform (linux/win)
 Vagrant Terraform Docker Nginx Sandbox.  
 Locally running terraform all-in-one.
 
@@ -30,7 +30,7 @@ Commands:
              $ sudo docker exec -it 7cdc5352bdaf bash
              root@7cdc5352bdaf:/#
 
-             
+
      Browse http://192.168.45.10
 ~~~~
 
