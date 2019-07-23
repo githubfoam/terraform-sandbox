@@ -25,6 +25,7 @@ resource "docker_container" "nginx" {
 
   ports {
       internal = 80
+  #    external = 80 # multiple containers ports conflict
     }
 
     volumes {
