@@ -3,7 +3,7 @@ Vagrant Terraform Sandbox
 
 
 ----------------
-Cross-platform (linux/win)
+Cross-platform (linux/win)  
 Vagrant Terraform Docker Nginx Sandbox.  
 Locally running terraform all-in-one.
 
