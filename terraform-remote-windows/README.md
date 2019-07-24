@@ -4,7 +4,6 @@ Vagrant Terraform Sandbox
 
 ----------------
 Remote running terraform all-in-one.
-
 remote control: Windows Host  
 target vbox: terraformsandbox02
 
