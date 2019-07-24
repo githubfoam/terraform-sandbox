@@ -1,0 +1,91 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+$centos_docker_script = <<SCRIPT
+# Install Docker
+sudo yum remove docker \
+          docker-client \
+          docker-client-latest \
+          docker-common \
+          docker-latest \
+          docker-latest-logrotate \
+          docker-logrotate \
+          docker-engine
+sudo yum install -y yum-utils \
+            device-mapper-persistent-data \
+            lvm2
+sudo yum-config-manager \
+                --add-repo \
+                https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install -y docker-ce \
+              docker-ce-cli \
+              containerd.io
+sudo systemctl start docker && sudo docker --version
+# Install Terraform
+sudo yum install unzip -y
+wget -q -nc https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip
+unzip terraform_0.12.5_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+terraform version
+SCRIPT
+$ubuntu_docker_script = <<SCRIPT
+  # Install Docker
+  sudo apt-get update
+  sudo apt-get remove docker docker-engine docker.io
+  sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  sudo apt-key add -
+  apt-key fingerprint 0EBFCD88
+  sudo add-apt-repository \
+  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) \
+  stable"
+  sudo apt-get update
+  sudo apt-get install docker-ce -y
+  docker --version
+  # Install Terraform
+  sudo apt-get install unzip -y
+  wget -q -nc https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip
+  unzip terraform_0.12.5_linux_amd64.zip
+  sudo mv terraform /usr/local/bin/
+  terraform version
+SCRIPT
+Vagrant.configure(2) do |config|
+  config.vm.box_check_update = false
+
+  # vbox template for all vagranth instances
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = false
+    vb.memory = "512"
+    vb.cpus = 2
+  end
+
+  # customize vagrant instance
+  config.vm.define "terraformsandbox01" do |webtier|
+    webtier.vm.box = "bento/ubuntu-18.10"
+    webtier.vm.provider "virtualbox" do |vb|
+      vb.name = "terraformsandbox01"
+     end
+     webtier.vm.network "private_network", ip: "172.28.128.12"
+     webtier.vm.network "forwarded_port", guest: 80, host: 82
+     webtier.vm.provision "shell", inline: $ubuntu_docker_script, privileged: false
+  end
+
+  # customize vagrant instance
+  config.vm.define "terraformsandbox02" do |webtier|
+    webtier.vm.box = "bento/centos-7.6"
+    # webtier.vm.network "private_network", type: "dhcp"
+    webtier.vm.network "private_network", ip: "172.28.128.15"
+    webtier.vm.network "forwarded_port", guest: 80, host: 83
+    webtier.vm.provider "virtualbox" do |vb|
+      vb.name = "terraformsandbox02"
+     end
+    webtier.vm.provision "shell", inline: $centos_docker_script, privileged: false
+    webtier.vm.provision "shell", inline: <<-SHELL
+        mkdir /etc/systemd/system/docker.service.d
+        cp /vagrant/docker.conf /etc/systemd/system/docker.service.d
+        systemctl daemon-reload
+        systemctl restart docker.service
+        echo "terraformsandbox02 up"
+    SHELL
+  end
+
+end
