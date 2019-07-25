@@ -1,7 +1,7 @@
 provider "docker" {
   version = "~> 2.0"
 #  host = "tcp://${var.docker_host_ip}:${var.docker_host_port}/"
-  host = "tcp://172.28.128.15:2375/"
+  host = "tcp://172.28.128.15:4141/"
 #  alias       = "nginx"
 }
 
