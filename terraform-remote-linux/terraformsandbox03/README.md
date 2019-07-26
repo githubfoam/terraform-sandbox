@@ -8,10 +8,9 @@ Remote running terraform
 enabling Docker API via single/multiple port(s)  
 
 remote control: terraformsandbox01  
-target vbox: terraformsandbox02  
-
+target vbox: terraformsandbox03  
 ~~~~
-docker.conf: single port
+multiple_sockets.conf: multiple ports
 ~~~~  
 remote control: terraformsandbox01  
 
@@ -19,27 +18,26 @@ remote control: terraformsandbox01
 Commands:
 
              > vagrant ssh terraformsandbox01
-             cd /vagrant/terraformsandbox02/nginx
+             cd /vagrant/terraformsandbox03/jenkins
 
-             vagrant@vagrant:/vagrant/terraformsandbox02/nginx$ sudo docker image ls
-             REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-             vagrant@vagrant:/vagrant/terraformsandbox02/nginx$ sudo docker -H tcp://172.28.128.15:2375 image ls
+             vagrant@vagrant:/vagrant/terraformsandbox03/jenkins$ sudo docker -H tcp://172.28.128.16:4142 image ls
              REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 
              terraform plan
              terraform apply -auto-approve
 
-             vagrant@vagrant:/vagrant/terraformsandbox02/nginx$ sudo docker image ls
+             vagrant@vagrant:/vagrant/terraformsandbox03/jenkins$ sudo docker image ls
              REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-             vagrant@vagrant:/vagrant/terraformsandbox02/nginx$ sudo docker -H tcp://172.28.128.15:2375 image ls
+             vagrant@vagrant:/vagrant/terraformsandbox03/jenkins$ sudo docker -H tcp://172.28.128.16:4142 image ls
              REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-             nginx               latest              e445ab08b2be        2 days ago          126MB             
-             vagrant@vagrant:/vagrant/terraformsandbox02/nginx$ sudo docker -H tcp://172.28.128.15:2375 container ls
-             CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
-             b1eebb131a62        e445ab08b2be        "nginx -g 'daemon of…"   4 minutes ago       Up 4 minutes        0.0.0.0:84->80/tcp   nginx-proxy2
+             jenkins/jenkins     lts                 b137a5753eb1        9 days ago          567MB
+             vagrant@vagrant:/vagrant/terraformsandbox03/jenkins$ sudo docker -H tcp://172.28.128.16:4142 container ls
+             CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+             d0d31d6ba4f7        b137a5753eb1        "/sbin/tini -- /usr/…"   3 minutes ago       Up 2 minutes        50000/tcp, 0.0.0.0:8081->8080/tcp   jenkinsci
 
              terraform destroy -auto-approve             
 
+Browse Web UI http://172.28.128.16:8081
 
 ~~~~
 ----------------
