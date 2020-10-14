@@ -1,114 +1,64 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-$centos_docker_script = <<SCRIPT
-# Install Docker
-sudo yum remove docker \
-          docker-client \
-          docker-client-latest \
-          docker-common \
-          docker-latest \
-          docker-latest-logrotate \
-          docker-logrotate \
-          docker-engine
-sudo yum install -y yum-utils \
-            device-mapper-persistent-data \
-            lvm2
-sudo yum-config-manager \
-                --add-repo \
-                https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install -y docker-ce \
-              docker-ce-cli \
-              containerd.io
-sudo systemctl start docker && sudo docker --version
-# Install Terraform
-sudo yum install unzip -y
-wget -q -nc https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip
-unzip terraform_0.12.5_linux_amd64.zip
-sudo mv terraform /usr/local/bin/
-terraform version
-SCRIPT
-$ubuntu_docker_script = <<SCRIPT
-  # Install Docker
-  sudo apt-get update
-  sudo apt-get remove docker docker-engine docker.io
-  sudo apt-get install apt-transport-https ca-certificates curl software-properties-common -y
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  sudo apt-key add -
-  apt-key fingerprint 0EBFCD88
-  sudo add-apt-repository \
-  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) \
-  stable"
-  sudo apt-get update
-  sudo apt-get install docker-ce -y
-  docker --version
-  # Install Terraform
-  sudo apt-get install unzip -y
-  wget -q -nc https://releases.hashicorp.com/terraform/0.12.5/terraform_0.12.5_linux_amd64.zip
-  unzip terraform_0.12.5_linux_amd64.zip
-  sudo mv terraform /usr/local/bin/
-  terraform version
-SCRIPT
-Vagrant.configure(2) do |config|
+
+# Vagrant version and Vagrant API version requirements
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+
+# YAML module for reading box configurations.
+require 'yaml'
+
+# Read machine configs from YAML file
+machines = YAML.load_file(File.join(File.dirname(__FILE__), 'topology.yml'))
+
+# Create boxes
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Disable updates to keep environment sane.
   config.vm.box_check_update = false
 
-  # vbox template for all vagranth instances
-  config.vm.provider "virtualbox" do |vb|
-    vb.gui = false
-    vb.memory = "512"
-    vb.cpus = 2
-  end
+  # Iterate through entries in YAML file
+    machines.each do |machine|
+      config.vm.define machine["name"] do |box|
+        box.vm.box = machine["box"]
+        box.vm.hostname = machine["name"]
+        box.vm.network "private_network", ip: machine["ip"]
 
-  # customize vagrant instance
-  config.vm.define "terraformsandbox01" do |webtier|
-    webtier.vm.box = "bento/ubuntu-18.10"
-    webtier.vm.provider "virtualbox" do |vb|
-      vb.name = "terraformsandbox01"
-     end
-     webtier.vm.network "private_network", ip: "172.28.128.12"
-     webtier.vm.network "forwarded_port", guest: 80, host: 81
-     webtier.vm.provision "shell", inline: $ubuntu_docker_script, privileged: false
-  end
 
-  # customize vagrant instance
-  config.vm.define "terraformsandbox02" do |webtier|
-    webtier.vm.box = "bento/centos-7.6"
-    # webtier.vm.network "private_network", type: "dhcp"
-    webtier.vm.network "private_network", ip: "172.28.128.15"
-    webtier.vm.network "forwarded_port", guest: 80, host: 82
-    webtier.vm.network "forwarded_port", guest: 5000, host: 8080
-    webtier.vm.provider "virtualbox" do |vb|
-      vb.name = "terraformsandbox02"
-     end
-    webtier.vm.provision "shell", inline: $centos_docker_script, privileged: false
-    webtier.vm.provision "shell", inline: <<-SHELL
-        mkdir /etc/systemd/system/docker.service.d
-        cp /vagrant/docker.conf /etc/systemd/system/docker.service.d
-        # cp /vagrant/multiple_sockets.conf /etc/systemd/system/docker.service.d
-        systemctl daemon-reload
-        systemctl restart docker.service
-        echo "terraformsandbox02 up"
+        if machine["guest_port"] and machine["host_port"] != nil
+          box.vm.network "forwarded_port", guest: machine["guest_port"], host: machine["host_port"]
+        end
+
+        if machine["script"] != nil
+          box.vm.provision :shell, :path => machine["script"]
+        end
+
+        if machine["ansible"] != nil
+          box.vm.provision "ansible_local" do |ansible|
+          # box.vm.provision "ansible" do |ansible|
+              ansible.compatibility_mode = "2.0"
+              ansible.version = "2.8.2"
+              ansible.playbook = machine["ansible"]
+          end
+        end
+
+        box.vm.provider :virtualbox do |vb|
+          vb.name = machine["name"]
+          vb.memory = machine["ram"]
+
+          if machine["gui"] != nil
+          	vb.gui = false
+          end # end of gui
+
+          vb.customize ["modifyvm", :id, "--groups", "/DevSecOps-Studio"]
+
+        end # end of vb provider
+      end # end of box
+    end # end of servers loop
+
+    config.vm.provision "shell", inline: <<-SHELL
+      hostnamectl
+      # apt-get install -y avahi-daemon libnss-mdns
     SHELL
-  end
 
-  # customize vagrant instance
-  config.vm.define "terraformsandbox03" do |webtier|
-    webtier.vm.box = "bento/centos-7.6"
-    # webtier.vm.network "private_network", type: "dhcp"
-    webtier.vm.network "private_network", ip: "172.28.128.16"
-    webtier.vm.network "forwarded_port", guest: 80, host: 83
-    webtier.vm.network "forwarded_port", guest: 5000, host: 8081
-    webtier.vm.provider "virtualbox" do |vb|
-      vb.name = "terraformsandbox03"
-     end
-    webtier.vm.provision "shell", inline: $centos_docker_script, privileged: false
-    webtier.vm.provision "shell", inline: <<-SHELL
-        mkdir /etc/systemd/system/docker.service.d
-        # cp /vagrant/docker.conf /etc/systemd/system/docker.service.d
-        cp /vagrant/multiple_sockets.conf /etc/systemd/system/docker.service.d
-        systemctl daemon-reload
-        systemctl restart docker.service
-        echo "terraformsandbox03 up"
-    SHELL
-  end
-
-end
+  end # end of config

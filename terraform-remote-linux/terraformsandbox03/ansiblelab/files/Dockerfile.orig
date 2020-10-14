@@ -1,0 +1,18 @@
+FROM alpine:3.10.1
+MAINTAINER githubfoam
+
+ENV JRE_VERSION=openjdk11-jre
+ENV REPO=http://dl-cdn.alpinelinux.org/alpine/edge/community
+
+RUN apk --update --no-cache add --virtual .dependencies \
+    make \
+    wget \
+    ca-certificates \
+    musl-dev \
+    tar && \
+    apk add $JRE_VERSION --repository=$REPO
+    # apk add openjdk8-jre=$JAVA_VERSION
+    # apk add openjdk11-jre --repository=$REPO
+    # apk --no-cache add openjdk11 --repository=$REPO
+    # apk --no-cache add openjdk11 --repository=$REPO
+    # apk add $JRE_VERSION --repository=$REPO

@@ -40,7 +40,7 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
     # vb.name = "terraformsandbox01"
-    vb.memory = "512"
+    vb.memory = "4916"
     vb.cpus = 2
   end
 
@@ -54,7 +54,7 @@ Vagrant.configure(2) do |config|
 
   # customize vagrant instance
   config.vm.define "terraformsandbox02" do |webtier|
-    webtier.vm.box = "bento/centos-7.6"
+    webtier.vm.box = "bento/centos-7.8"
     webtier.vm.provider "virtualbox" do |vb|
       vb.name = "terraformsandbox02"
      end

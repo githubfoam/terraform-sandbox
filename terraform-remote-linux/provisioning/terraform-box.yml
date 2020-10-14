@@ -1,0 +1,37 @@
+---
+
+- name: Install Docker, Terraform
+  gather_facts: False
+  hosts: all
+  become: yes
+
+  pre_tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt-get -y update && apt-get install -y python-minimal)
+  - name: Run setup again for gather facts
+    setup:
+  - name: Fix hash mismatch error
+    apt:
+       update_cache: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  vars:
+    # Inspec
+    ruby_version: 'ruby-2.6.3'
+    rvm1_rubies: ['{{ ruby_version }}']
+    rvm1_user: 'root'
+    rvm1_install_path: '/usr/local/rvm'
+
+    # host entries won't work in docker
+    # see https://stackoverflow.com/questions/28327458/how-to-add-my-containers-hostname-to-etc-hosts
+    add_host_entries: true
+
+  roles:
+    - common
+    # - geerlingguy.pip
+    # - geerlingguy.docker
+    # - geerlingguy.ansible-role-packer
+    # - secfigo.terraform
+    # - devsecops
+    # - rvm_io.ruby
+    # - inspec
