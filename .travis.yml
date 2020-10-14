@@ -36,6 +36,6 @@ matrix:
       script:
         - sudo make deploy-libvirt
         - sudo make deploy-vagrant
-        # - sudo make deploy-terraform
+        - sudo make deploy-terraform
       after_success:
         - deactivate        
