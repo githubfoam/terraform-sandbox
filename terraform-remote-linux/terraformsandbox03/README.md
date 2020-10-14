@@ -40,22 +40,6 @@ Commands:
 Browse Web UI http://172.28.128.16:8081
 
 ~~~~
-----------------
-target vbox: terraformsandbox02  
-
-~~~~
-Commands:
-             > vagrant ssh terraformsandbox02  
-
-             [vagrant@localhost ~]$ sudo docker image ls
-             REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-             nginx               latest              e445ab08b2be        2 days ago          126MB
-             [vagrant@localhost ~]$ sudo docker container ls
-             CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
-             b1eebb131a62        e445ab08b2be        "nginx -g 'daemon of…"   4 minutes ago       Up 3 minutes        0.0.0.0:84->80/tcp   nginx-proxy2
-
-Browse Web UI http://172.28.128.15:84/
-~~~~
 
 
 License
