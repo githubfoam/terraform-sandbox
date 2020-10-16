@@ -43,7 +43,7 @@ echo "==========================================================================
 
 
 # https://github.com/chef/bento/tree/master/packer_templates/ubuntu
-vagrant box add "bento/ubuntu-19.10" --provider=libvirt
+vagrant box add "bento/ubuntu-19.10" --provider=virtualbox
 vagrant mutate "bento/ubuntu-19.10" libvirt
 vagrant init --template Vagrantfile.terraform.erb
 vagrant up --provider=libvirt terraformsandbox01
@@ -70,7 +70,7 @@ virsh list --all #show all running KVM/libvirt VMs
 vagrant destroy -f
 
 # https://github.com/chef/bento/tree/master/packer_templates/ubuntu
-vagrant box add "bento/ubuntu-20.04" --provider=libvirt
+vagrant box add "bento/ubuntu-20.04" --provider=virtualbox
 vagrant mutate "bento/ubuntu-20.04" libvirt
 vagrant init --template Vagrantfile.terraform.erb
 vagrant up --provider=libvirt terraformsandbox02
