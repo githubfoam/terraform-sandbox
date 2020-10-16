@@ -1,8 +1,8 @@
 #!/bin/sh
-# set -o errexit
-# set -o pipefail
-# set -o nounset
-# set -o xtrace
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o xtrace
 # set -eox pipefail #safety for script
 
   echo "===================================================================================="
@@ -18,6 +18,9 @@
 echo "=================================# # Install Docker==================================================="
 
 # https://docs.docker.com/engine/install/ubuntu/
+
+# dpkg-preconfigure: unable to re-open stdin: No such file or directory
+export DEBIAN_FRONTEND=noninteractive
 
 apt-get remove docker docker-engine docker.io containerd runc
 apt-get update
@@ -41,8 +44,8 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 apt-get update && apt-get install terraform -qyy
 terraform -help
+terraform -install-autocomplete 
 
-echo "terraform-sandbox up && running"
 echo "===================================================================================="
 
 # apt-get update -qqy
