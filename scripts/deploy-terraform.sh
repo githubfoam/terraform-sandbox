@@ -49,6 +49,13 @@ vagrant init --template Vagrantfile.terraform.erb
 vagrant up --provider=libvirt terraformsandbox01
 
 # https://github.com/chef/bento/tree/master/packer_templates/ubuntu
+# vagrant box add "bento/ubuntu-20.04" --provider=virtualbox
+# vagrant mutate "bento/ubuntu-20.04" libvirt
+# vagrant init --template Vagrantfile.terraform.erb
+# vagrant up --provider=libvirt terraformsandbox02
+
+
+# https://github.com/chef/bento/tree/master/packer_templates/ubuntu
 # vagrant box add "bento/ubuntu-19.10" --provider=virtualbox
 # vagrant mutate "bento/ubuntu-19.10" libvirt
 # vagrant init --template Vagrantfile.provision.bash.ubuntu.erb
@@ -69,14 +76,3 @@ vagrant status
 virsh list --all #show all running KVM/libvirt VMs
 vagrant destroy -f
 
-# https://github.com/chef/bento/tree/master/packer_templates/ubuntu
-vagrant box add "bento/ubuntu-20.04" --provider=virtualbox
-vagrant mutate "bento/ubuntu-20.04" libvirt
-vagrant init --template Vagrantfile.terraform.erb
-vagrant up --provider=libvirt terraformsandbox02
-
-vagrant box list #veridy installed boxes
-vagrant status #Check the status of the VMs to see that none of them have been created yet
-vagrant status
-virsh list --all #show all running KVM/libvirt VMs
-vagrant destroy -f

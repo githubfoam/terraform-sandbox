@@ -3,13 +3,18 @@ Vagrant Terraform Sandbox
 
 
 ----------------
-Cross-platform (linux/win)  
+Cross-platform (linux/win-macos)  
 Vagrant Terraform Docker Nginx Sandbox.  
 Locally running terraform all-in-one.
 
+https://learn.hashicorp.com/tutorials/terraform/install-cli
 ----------------
 
+
 ~~~~
+>vagrant init --template Vagrantfile.terraform.erb
+>vagrant up terraformsandbox01
+>vagrant ssh terraformsandbox01
 Commands:
 
              - vagrant ssh
