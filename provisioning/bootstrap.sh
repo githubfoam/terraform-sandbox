@@ -48,10 +48,7 @@ terraform -install-autocomplete
 
 echo "===================================================================================="
 
-# apt-get update -qqy
-
 # docker image ls
-
 # terraform init
 # terraform plan -out nginx.tfplan
 # terraform apply nginx.tfplan
