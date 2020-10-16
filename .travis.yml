@@ -41,12 +41,12 @@ matrix:
         - deactivate        
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
-    - name: "deploy terraform w homebrew on macOS 10.15.5 osx xcode12u"
+    - name: "deploy terraform w homebrew on macOS 10.15.7 osx xcode12.2 "
       os: osx
       osx_image:
         - xcode12.2 #macOS 10.15.7
-        - xcode12u #macOS 10.15.5
-        - xcode12 #macOS 10.15.7
+        # - xcode12u #macOS 10.15.5
+        # - xcode12 #macOS 10.15.7
       addons:
         homebrew:
           taps: hashicorp/tap
@@ -68,12 +68,12 @@ matrix:
         - deactivate        
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
-    - name: "deploy terraform w0 homebrew on macOS 10.15.5 osx xcode12u"
+    - name: "deploy terraform wo homebrew on macOS 10.15.7 osx xcode12.2"
       os: osx
       osx_image:
         - xcode12.2 #macOS 10.15.7
-        - xcode12u #macOS 10.15.5
-        - xcode12 #macOS 10.15.7
+        # - xcode12u #macOS 10.15.5
+        # - xcode12 #macOS 10.15.7
       # addons:
       #   homebrew:
       #     taps: hashicorp/tap

@@ -59,7 +59,8 @@ Vagrant.configure(2) do |config|
     webtier.vm.provider "virtualbox" do |vb|
       vb.name = "terraformsandbox01"
      end
-  webtier.vm.provision "shell", inline: $script, privileged: false
+  #webtier.vm.provision "shell", inline: $script, privileged: false
+  webtier.vm.provision :shell, path: "provisioning/bootstrap.sh"
   end
 
   # customize vagrant instance
@@ -68,7 +69,8 @@ Vagrant.configure(2) do |config|
     webtier.vm.provider "virtualbox" do |vb|
       vb.name = "terraformsandbox02"
      end
-  webtier.vm.provision "shell", inline: $script, privileged: false
+  #webtier.vm.provision "shell", inline: $script, privileged: false
+  webtier.vm.provision :shell, path: "provisioning/bootstrap.sh"
   end
 
 end
