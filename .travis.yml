@@ -7,22 +7,7 @@ notifications:
 matrix:
   fast_finish: true
   include:
-
-    - name: "deploy terraform nginx - bionic"
-      dist: bionic
-      language: python
-      python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - sudo make deploy-libvirt
-        - sudo make deploy-vagrant
-        # - sudo make deploy-terraform
-      after_success:
-        - deactivate        
+     
 
 # https://learn.hashicorp.com/tutorials/terraform/install-cli
     - name: "deploy terraform w homebrew on macOS 10.15.7 osx xcode12.2 "
@@ -68,22 +53,3 @@ matrix:
       after_success:
         - deactivate 
 
-        # https://learn.hashicorp.com/tutorials/terraform/install-cli
-    - name: "deploy terraform   Python 3.8 on Windows"
-      os: windows
-      language: shell
-      env:
-        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco install python --version 3.8.1
-        - pip install virtualenv
-        - virtualenv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-        - python --version
-        - pip install -r requirements.txt
-      script:
-        - choco install terraform
-        - terraform -help
-        - terraform -install-autocomplete        
-      after_success:
-        - deactivate         
