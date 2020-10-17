@@ -1,15 +1,18 @@
-Vagrant Terraform Sandbox
-=========
+terraform sandbox  
 
+Travis (.com)  branch:
+[![Build Status](https://travis-ci.com/githubfoam/terraform-sandbox.svg?branch=master)](https://travis-ci.com/githubfoam/terraform-sandbox)  
 
 ----------------
-Cross-platform (linux/win)  
+Cross-platform (linux/win/macos)  
 Vagrant Terraform Docker Nginx Sandbox.  
-Locally running terraform all-in-one.
-
-----------------
 
 ~~~~
+
+>vagrant init --template Vagrantfile.terraform.erb
+>vagrant up terraformsandbox01
+>vagrant ssh terraformsandbox01
+
 Commands:
 
              - vagrant ssh
@@ -32,6 +35,11 @@ Commands:
 
 
      Browse http://192.168.45.10
+~~~~
+
+~~~~
+https://learn.hashicorp.com/tutorials/terraform/install-cli
+----------------
 ~~~~
 
 License
