@@ -46,15 +46,16 @@ apt-get update && apt-get install terraform -qyy
 terraform -help
 terraform -install-autocomplete 
 
+echo "=============================Deploy nginx======================================================="
+
+docker image ls
+terraform init
+terraform plan -out nginx.tfplan
+terraform apply nginx.tfplan
+terraform show
+terraform destroy
+
+sudo docker image ls
+
+curl http://192.168.45.10
 echo "===================================================================================="
-
-# docker image ls
-# terraform init
-# terraform plan -out nginx.tfplan
-# terraform apply nginx.tfplan
-# terraform show
-# terraform destroy
-
-# sudo docker image ls
-
-# curl http://192.168.45.10
