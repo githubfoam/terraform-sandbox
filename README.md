@@ -3,6 +3,12 @@ terraform sandbox
 Travis (.com)  branch:
 [![Build Status](https://travis-ci.com/githubfoam/terraform-sandbox.svg?branch=master)](https://travis-ci.com/githubfoam/terraform-sandbox)  
 
+feature windows
+[![Build Status](https://travis-ci.com/githubfoam/terraform-sandbox.svg?branch=feature_windows)](https://travis-ci.com/githubfoam/terraform-sandbox)
+
+feature macos
+[![Build Status](https://travis-ci.com/githubfoam/terraform-sandbox.svg?branch=feature_macos)](https://travis-ci.com/githubfoam/terraform-sandbox)
+
 ----------------
 Cross-platform (linux/win/macos)  
 Vagrant Terraform Docker Nginx Sandbox.  
